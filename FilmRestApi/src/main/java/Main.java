@@ -6,8 +6,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.*;
+import java.util.List;
 
 public class Main extends Application{
     //Skapar entity manager factory
@@ -34,7 +34,41 @@ public class Main extends Application{
         //empScene står för Employee Scene, där employees kollar upp filmer
         Scene empScene = new Scene(borderPane, 900, 700);
         primaryStage.setScene(empScene);
-        primaryStage.show();
 
+        //Button actions
+        bSubmitQuery.setOnAction(event -> {
+            bReadTable(resultArea);
+        });
+
+        //Vi visar vår scene
+        primaryStage.show();
+    }
+    //Vår knapp för att läsa av ett table
+    private void bReadTable(TextArea resultArea){
+        EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+
+            Query query = entityManager.createNativeQuery("SELECT name FROM category");
+            List<String> result = query.getResultList();
+            resultArea.clear();
+
+            for(String s : result){
+                resultArea.appendText(s + "\n");
+            }
+            transaction.commit();
+
+        }
+        catch(Exception e){
+            if(transaction != null){
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        finally{
+            entityManager.close();
+        }
     }
 }

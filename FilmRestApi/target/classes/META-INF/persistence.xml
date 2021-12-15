@@ -8,7 +8,7 @@
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/><!-- Vår driver för db -->
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306" /> <!-- Fyll i URL till databasen i value -->
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sakila" /> <!-- Fyll i URL till databasen i value -->
             <property name="javax.persistence.jdbc.user" value="root"/> <!-- Mitt MySQL username är "root" -->
             <property name="javax.persistence.jdbc.password" value="password"/> <!-- Mitt MySQL password är "password" -->
             <property name="hibernate.show_sql" value="true"/> <!-- Ser till att vi skriver ut alla queries i konsolen -->
