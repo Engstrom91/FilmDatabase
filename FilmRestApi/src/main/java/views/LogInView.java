@@ -2,8 +2,7 @@ package views;
 
 import controllers.TableController;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
@@ -27,21 +26,36 @@ import java.util.List;
 
 public class LogInView {
 
-
-        private HBox hBSelectTable = new HBox();
-        //Result area visar resultatet av queries
-        private TextArea staffResultArea = new TextArea();
-        private Button bReadQuery = new Button("Refresh");
+        private HBox hBTop = new HBox();
+        private HBox hBBottom = new HBox();
         private BorderPane borderPane = new BorderPane();
         private Scene logInScene = new Scene(borderPane, 900, 700);
+
+        //Log In sektionen
+        private TextField tfUsername = new TextField();
+        private TextField tfPassword = new TextField();
+        private Label lUsername = new Label("Username");
+        private Label lPassword = new Label("Password");
+
+        private Button bAttemptLogIn = new Button("Log In");
+
+        //Read sektionen
+        private TextArea staffResultArea = new TextArea();
+        private Button bReadQuery = new Button("Refresh");
+
 
         //Lägger till knappen och textarea i vår HBox
 
         public void renderLogInView(){
-            hBSelectTable.getChildren().addAll(bReadQuery, staffResultArea);
-            //Skapar vår border pane och scene
-            borderPane.setLeft(hBSelectTable);
-
+            hBTop.getChildren().addAll(lUsername, tfUsername, lPassword, tfPassword, bAttemptLogIn);
+            hBBottom.getChildren().addAll(bReadQuery, staffResultArea);
+            //Renderar vårde Hboxar och kopplar våra knappar till rätt metoder
+            borderPane.setTop(hBTop);
+            borderPane.setBottom(hBBottom);
+            //Kopplar våra knappar till respektive metoder
+            bAttemptLogIn.setOnAction(event -> {
+                bAttemptLogIn(staffResultArea);
+            });
             bReadQuery.setOnAction(event -> {
                 bReadTable(staffResultArea);
             });
@@ -51,6 +65,7 @@ public class LogInView {
         private void bReadTable(TextArea resultArea) {
             EntityManager entityManager = TableController.ENTITY_MANAGER_FACTORY.createEntityManager();
             EntityTransaction transaction = null;
+
             try {
                 transaction = entityManager.getTransaction();
                 transaction.begin();
@@ -73,7 +88,6 @@ public class LogInView {
                     resultArea.appendText(j + "\n");
                 }
 
-
                 transaction.commit();
 
             } catch (Exception e) {
@@ -86,11 +100,69 @@ public class LogInView {
             }
         }
 
+    //Vår knapp för att logga in
+    private void bAttemptLogIn(TextArea resultArea) {
+        EntityManager entityManager = TableController.ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+
+        String enteredUsername = tfUsername.getText();
+        String enteredPassword = tfPassword.getText();
+        boolean correctUsername = false;
+        boolean correctPassword = false;
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+
+            Query usernameQuery = entityManager.createNativeQuery("SELECT username FROM staff");
+            Query passwordQuery = entityManager.createNativeQuery("SELECT password FROM staff");
+
+            List<String> usernames = usernameQuery.getResultList();
+            List<String> passwords = passwordQuery.getResultList();
+
+            resultArea.clear();
+
+            resultArea.appendText("Usernames" + "\n");
+            //Prints out usernames list to resultArea
+            for (String i : usernames) {
+                if (enteredUsername.equals(i)){
+                    correctUsername = true;
+                }
+            }
+
+            resultArea.appendText("Passwords" + "\n");
+            //Prints out passwords list to resultArea
+            for (String j : passwords) {
+                if (enteredPassword.equals(j)){
+                    correctPassword = true;
+                }
+            }
+
+            if(correctUsername && correctPassword){
+                resultArea.clear();
+                resultArea.appendText("Logging in");
+            }
+            else {
+                resultArea.clear();
+                resultArea.appendText("Incorrect username or password");
+            }
+
+            transaction.commit();
+
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
+    }
+
     public LogInView() {
     }
 
-    public HBox gethBSelectTable() {
-        return hBSelectTable;
+    public HBox gethBBottom() {
+        return hBBottom;
     }
 
     public TextArea getStaffResultArea() {
@@ -109,8 +181,8 @@ public class LogInView {
         return logInScene;
     }
 
-    public void sethBSelectTable(HBox hBSelectTable) {
-        this.hBSelectTable = hBSelectTable;
+    public void sethBBottom(HBox hBBottom) {
+        this.hBBottom = hBBottom;
     }
 
     public void setStaffResultArea(TextArea staffResultArea) {
