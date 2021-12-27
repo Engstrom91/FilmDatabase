@@ -1,9 +1,8 @@
 package views;
 
-import controllers.TableController;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -12,15 +11,14 @@ import models.Language;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import static controllers.TableController.ENTITY_MANAGER_FACTORY;
 
 public class CreateView {
+
+    private DeleteView deleteView = new DeleteView();
 
     private HBox hBCenter = new HBox();
     private HBox hBActor = new HBox();
@@ -28,17 +26,17 @@ public class CreateView {
 
     private Button bCreateActor = new Button("Add Actor");
     private Button bCreateLanguage = new Button("Add Language");
+    private Button bSwitchToDeleteView = new Button("Delete Menu");
     private BorderPane borderPane = new BorderPane();
 
     private Scene createScene = new Scene(borderPane, 900, 700);
 
-    //Language Text Fields
+    //Text Fields
     private TextField tf_actor_firstName = new TextField();
     private TextField tf_actor_lastName = new TextField();
     private TextField tf_language_name = new TextField();
 
-    //Lägger till knappen och textarea i vår HBox
-    
+    //Lägger till knappar och text fields i vår borderpane
     public void renderCreateView(){
         tf_actor_firstName.setPromptText("First Name");
         tf_actor_lastName.setPromptText("Last Name");
@@ -51,6 +49,7 @@ public class CreateView {
         //Skapar vår border pane och scene
 
         borderPane.setCenter(hBCenter);
+        borderPane.setTop(bSwitchToDeleteView);
 
 
         bCreateActor.setOnAction(event -> {
@@ -62,6 +61,11 @@ public class CreateView {
         bCreateLanguage.setOnAction(event -> {
             createLanguage(tf_language_name);
             tf_language_name.clear();
+        });
+
+        bSwitchToDeleteView.setOnAction(event -> {
+            controllers.Application.getPrimaryStage().setScene(deleteView.getDeleteScene());
+            deleteView.renderDeleteView();
         });
     }
 
@@ -130,7 +134,10 @@ public class CreateView {
         }
     }
 
-
+    public void switchToDeleteView(){
+        controllers.Application.getPrimaryStage().setScene(deleteView.getDeleteScene());
+        deleteView.renderDeleteView();
+    }
     public CreateView(){
         
     }

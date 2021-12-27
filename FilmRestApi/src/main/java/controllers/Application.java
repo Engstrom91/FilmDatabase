@@ -2,11 +2,13 @@ package controllers;
 
 import javafx.stage.Stage;
 import views.CreateView;
+import views.DeleteView;
 import views.LogInView;
 
 public class Application extends javafx.application.Application {
 
     private static Stage primaryStage;
+    public static LogInView logInView = new LogInView();
     public static void main(String[] args){
         launch(args);
     }
@@ -14,9 +16,7 @@ public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
-        CreateView createView = new CreateView();
-        LogInView logInView = new LogInView();
-        //Ska senare aktiveras med en knapp
+
         logInView.renderLogInView();
 
         primaryStage.setScene(logInView.getLogInScene());

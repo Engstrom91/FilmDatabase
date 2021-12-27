@@ -204,4 +204,12 @@ public class LogInView {
     public void setLogInScene(Scene logInScene) {
         this.logInScene = logInScene;
     }
+
+    public CreateView getCreateView() {
+        return createView;
+    }
+
+    public void setCreateView(CreateView createView) {
+        this.createView = createView;
+    }
 }
