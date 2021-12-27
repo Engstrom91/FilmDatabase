@@ -39,6 +39,8 @@ public class LogInView {
 
         private Button bAttemptLogIn = new Button("Log In");
 
+        private CreateView createView = new CreateView();
+
         //Read sektionen
         private TextArea staffResultArea = new TextArea();
         private Button bReadQuery = new Button("Refresh");
@@ -140,6 +142,8 @@ public class LogInView {
             if(correctUsername && correctPassword){
                 resultArea.clear();
                 resultArea.appendText("Logging in");
+                controllers.Application.getPrimaryStage().setScene(createView.getCreateScene());
+                createView.renderCreateView();
             }
             else {
                 resultArea.clear();
