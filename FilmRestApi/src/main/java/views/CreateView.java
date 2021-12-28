@@ -18,8 +18,10 @@ import static controllers.TableController.ENTITY_MANAGER_FACTORY;
 
 public class CreateView {
 
-    private DeleteView deleteView = new DeleteView();
+    public static DeleteView deleteView = new DeleteView();
+    public static UpdateView updateView = new UpdateView();
 
+    private HBox hBTop = new HBox();
     private HBox hBCenter = new HBox();
     private HBox hBActor = new HBox();
     private HBox hBLanguage = new HBox();
@@ -27,9 +29,10 @@ public class CreateView {
     private Button bCreateActor = new Button("Add Actor");
     private Button bCreateLanguage = new Button("Add Language");
     private Button bSwitchToDeleteView = new Button("Delete Menu");
+    private Button bSwitchToUpdateView = new Button("Make An Update");
     private BorderPane borderPane = new BorderPane();
 
-    private Scene createScene = new Scene(borderPane, 900, 700);
+    private Scene createScene = new Scene(borderPane, 1200, 700);
 
     //Text Fields
     private TextField tf_actor_firstName = new TextField();
@@ -46,12 +49,12 @@ public class CreateView {
         hBActor.getChildren().addAll(tf_actor_firstName, tf_actor_lastName, bCreateActor);
         hBLanguage.getChildren().addAll(tf_language_name, bCreateLanguage);
         hBCenter.getChildren().addAll(hBActor, hBLanguage);
-        //Skapar vår border pane och scene
+        hBTop.getChildren().addAll(bSwitchToUpdateView, bSwitchToDeleteView);
 
         borderPane.setCenter(hBCenter);
-        borderPane.setTop(bSwitchToDeleteView);
+        borderPane.setTop(hBTop);
 
-
+        //Kopplar metoder till actions på knappar
         bCreateActor.setOnAction(event -> {
             createActor(tf_actor_firstName, tf_actor_lastName);
             tf_actor_firstName.clear();
@@ -66,6 +69,11 @@ public class CreateView {
         bSwitchToDeleteView.setOnAction(event -> {
             controllers.Application.getPrimaryStage().setScene(deleteView.getDeleteScene());
             deleteView.renderDeleteView();
+        });
+
+        bSwitchToUpdateView.setOnAction(event -> {
+            controllers.Application.getPrimaryStage().setScene(updateView.getUpdateScene());
+            updateView.renderUpdateView();
         });
     }
 
@@ -134,10 +142,6 @@ public class CreateView {
         }
     }
 
-    public void switchToDeleteView(){
-        controllers.Application.getPrimaryStage().setScene(deleteView.getDeleteScene());
-        deleteView.renderDeleteView();
-    }
     public CreateView(){
         
     }

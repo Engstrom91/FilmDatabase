@@ -26,7 +26,7 @@ import java.util.List;
 
 public class LogInView {
 
-        private HBox hBTop = new HBox();
+    private HBox hBTop = new HBox();
         private HBox hBBottom = new HBox();
         private BorderPane borderPane = new BorderPane();
         private Scene logInScene = new Scene(borderPane, 900, 700);
@@ -80,14 +80,16 @@ public class LogInView {
 
                 resultArea.clear();
 
+                resultArea.appendText("Usernames\n");
                 //Prints out usernames list to resultArea
-                for (String i : usernames) {
-                    resultArea.appendText(i + "\n");
+                for (int i = 0; i < usernames.size(); i++) {
+                    resultArea.appendText( i  + ". " + usernames.get(i) + "\n");
                 }
 
+                resultArea.appendText("\nPasswords\n");
                 //Prints out passwords list to resultArea
-                for (String j : passwords) {
-                    resultArea.appendText(j + "\n");
+                for (int j = 0; j < usernames.size(); j++) {
+                    resultArea.appendText( j + ". " + usernames.get(j)  + "\n");
                 }
 
                 transaction.commit();
@@ -123,8 +125,7 @@ public class LogInView {
 
             resultArea.clear();
 
-            resultArea.appendText("Usernames" + "\n");
-            //Prints out usernames list to resultArea
+
             for (String i : usernames) {
                 if (enteredUsername.equals(i)){
                     correctUsername = true;
@@ -132,7 +133,6 @@ public class LogInView {
             }
 
             resultArea.appendText("Passwords" + "\n");
-            //Prints out passwords list to resultArea
             for (String j : passwords) {
                 if (enteredPassword.equals(j)){
                     correctPassword = true;
