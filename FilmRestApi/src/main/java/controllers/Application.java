@@ -1,8 +1,6 @@
 package controllers;
 
 import javafx.stage.Stage;
-import views.CreateView;
-import views.DeleteView;
 import views.LogInView;
 
 public class Application extends javafx.application.Application {

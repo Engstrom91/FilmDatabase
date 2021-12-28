@@ -26,7 +26,7 @@ import java.util.List;
 
 public class LogInView {
 
-    private HBox hBTop = new HBox();
+        private HBox hBTop = new HBox();
         private HBox hBBottom = new HBox();
         private BorderPane borderPane = new BorderPane();
         private Scene logInScene = new Scene(borderPane, 900, 700);

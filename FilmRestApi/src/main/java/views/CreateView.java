@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import models.Actor;
 import models.Language;
 
@@ -20,14 +21,16 @@ public class CreateView {
 
     public static DeleteView deleteView = new DeleteView();
     public static UpdateView updateView = new UpdateView();
+    public static ReadView readView = new ReadView();
 
     private HBox hBTop = new HBox();
-    private HBox hBCenter = new HBox();
+    private VBox vBCenter = new VBox();
     private HBox hBActor = new HBox();
     private HBox hBLanguage = new HBox();
 
     private Button bCreateActor = new Button("Add Actor");
     private Button bCreateLanguage = new Button("Add Language");
+    private Button bSwitchToReadView = new Button("Search Data");
     private Button bSwitchToDeleteView = new Button("Delete Menu");
     private Button bSwitchToUpdateView = new Button("Make An Update");
     private BorderPane borderPane = new BorderPane();
@@ -48,10 +51,10 @@ public class CreateView {
 
         hBActor.getChildren().addAll(tf_actor_firstName, tf_actor_lastName, bCreateActor);
         hBLanguage.getChildren().addAll(tf_language_name, bCreateLanguage);
-        hBCenter.getChildren().addAll(hBActor, hBLanguage);
-        hBTop.getChildren().addAll(bSwitchToUpdateView, bSwitchToDeleteView);
+        vBCenter.getChildren().addAll(hBActor, hBLanguage);
+        hBTop.getChildren().addAll(bSwitchToReadView, bSwitchToUpdateView, bSwitchToDeleteView);
 
-        borderPane.setCenter(hBCenter);
+        borderPane.setCenter(vBCenter);
         borderPane.setTop(hBTop);
 
         //Kopplar metoder till actions på knappar
@@ -66,15 +69,22 @@ public class CreateView {
             tf_language_name.clear();
         });
 
-        bSwitchToDeleteView.setOnAction(event -> {
-            controllers.Application.getPrimaryStage().setScene(deleteView.getDeleteScene());
-            deleteView.renderDeleteView();
+        bSwitchToReadView.setOnAction(event -> {
+            controllers.Application.getPrimaryStage().setScene(readView.getReadScene());
+            readView.renderReadView();
         });
 
         bSwitchToUpdateView.setOnAction(event -> {
             controllers.Application.getPrimaryStage().setScene(updateView.getUpdateScene());
             updateView.renderUpdateView();
         });
+
+        bSwitchToDeleteView.setOnAction(event -> {
+            controllers.Application.getPrimaryStage().setScene(deleteView.getDeleteScene());
+            deleteView.renderDeleteView();
+        });
+
+
     }
 
     //Lägger till en entry i Actor tabellen
